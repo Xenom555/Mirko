@@ -8,6 +8,10 @@ def open_file():
         title="1st File",
         filetypes=(("Text files", "*.*"), ("All files", "*.*"))
     )
+    file_path = filedialog.askopenfilename(
+        title="2nd File",
+        filetypes=(("Text files", "*.*"), ("All files", "*.*"))
+    )
     if file_path:
         print(f"File selected: {file_path}")
         df = PD.read_excel(file_path)
