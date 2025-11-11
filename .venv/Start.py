@@ -8,6 +8,16 @@ from rapidfuzz import fuzz, process
 def open_file():
     file_path_1 = filedialog.askopenfilename(title="1st File",  filetypes=(("Text files", "*.*"), ("All files", "*.*")) )
     file_path_2 = filedialog.askopenfilename(title="2nd File",  filetypes=(("Text files", "*.*"), ("All files", "*.*")) )
+    output_file = filedialog.asksaveasfilename(
+        title="Save Results",
+        defaultextension=".xlsx",  # automatically add .xlsx if user doesn't
+        initialfile="fuzzy_results.xlsx",  # proposed filename
+        filetypes=(("Excel files", "*.xlsx"), ("All files", "*.*"))
+    )
+
+
+
+
     if file_path_1:
         df1 = PD.read_excel(file_path_1)
         df_data_1 = PD.DataFrame(df1)
@@ -24,10 +34,12 @@ def open_file():
 
     df_data_1[['Best_Match', 'Fuzzy_Match']] = df_data_1['Nazov'].apply(get_best_match)
 
+    if output_file:  # user did not cancel
+        df_data_1.to_excel(output_file, index=False)
+
+    print(f"Saved to {output_file}")
 
 
-    print(df_data_1)
-    print(df_data_2)
 root = tk.Tk()
 root.withdraw()  # Hide the main window
 open_file()
